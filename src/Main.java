@@ -6,11 +6,21 @@ public class Main
 {
 	static int sp = 0;
 	static ServerSocket ss;
-	static final int op=3390;
-	static final int lp=3389;
+	static int op=3389;
+	static int lp=3390;
 
 	public static void main(String[] args) throws Exception
 	{
+		if(args.length>=2)
+		{
+			op=Integer.parseInt(args[0]);
+			lp=Integer.parseInt(args[1]);
+		}
+		System.out.println("Open port:  "+op);
+		System.out.println("Local port: "+lp);
+		System.out.println();
+
+
 		System.out.println("Loading list");
 
 		HashMap<Long, Long> wl = new HashMap<>();
@@ -50,11 +60,20 @@ public class Main
 				{
 					ip=toDecIP("127.0.0.1");
 				}
+
+				bl.clear();
+				br = new BufferedReader(new FileReader("E:\\bl.txt"));
+				while((line = br.readLine()) != null && !line.isEmpty())
+				{
+					bl.put(toDecIP(line + ".0.0"), toDecIP(line + ".255.255"));
+				}
+				br.close();
+
 				for(Map.Entry<Long, Long> t : bl.entrySet())
 				{
 					if(ip >= t.getKey() && ip <= t.getValue())
 					{
-						System.out.println(ipa + "\t" + lp + "\tDenied\tblacklist");
+						System.out.println(ipa + "\t" + op + "\tDenied\tblacklist");
 						flag = 1;
 						break;
 					}
@@ -69,14 +88,14 @@ public class Main
 				{
 					if(ip >= t.getKey() && ip <= t.getValue())
 					{
-						System.out.println(ipa + "\t" + lp + "\tAccepted\tCN");
+						System.out.println(ipa + "\t" + op + "\tAccepted\tCN");
 						flag = 0;
 						break;
 					}
 				}
 				if(flag != 0)
 				{
-					System.out.println(ip + "\t" + lp + "\tDenied\tabroad");
+					System.out.println(ipa + "\t" + op + "\tDenied\tabroad");
 					s.close();
 					continue;
 
