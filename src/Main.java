@@ -25,7 +25,7 @@ public class Main
 
 		HashMap<Long, Long> wl = new HashMap<>();
 		HashMap<Long, Long> bl = new HashMap<>();
-		BufferedReader br = new BufferedReader(new FileReader("E:\\ip.txt"));
+		BufferedReader br = new BufferedReader(new FileReader("ip.txt"));
 		String line;
 		//StringBuilder sb=new StringBuilder();
 		while((line = br.readLine()) != null)
@@ -34,7 +34,7 @@ public class Main
 			wl.put(Long.parseLong(sp[0]), Long.parseLong(sp[1]));
 		}
 		br.close();
-		br = new BufferedReader(new FileReader("E:\\bl.txt"));
+		br = new BufferedReader(new FileReader("bl.txt"));
 		while((line = br.readLine()) != null && !line.isEmpty())
 		{
 			bl.put(toDecIP(line + ".0.0"), toDecIP(line + ".255.255"));
@@ -50,7 +50,6 @@ public class Main
 			try
 			{
 				Socket s = ss.accept();
-				sp=0;
 				String ipa = s.getInetAddress().getHostAddress();
 				long ip;
 				try
@@ -62,7 +61,7 @@ public class Main
 				}
 
 				bl.clear();
-				br = new BufferedReader(new FileReader("E:\\bl.txt"));
+				br = new BufferedReader(new FileReader("bl.txt"));
 				while((line = br.readLine()) != null && !line.isEmpty())
 				{
 					bl.put(toDecIP(line + ".0.0"), toDecIP(line + ".255.255"));
@@ -99,6 +98,20 @@ public class Main
 					s.close();
 					continue;
 
+				}
+				sp=0;
+				File ac=new File("ac.txt");
+				boolean acf=false;
+				if(!ac.exists())
+					acf=ac.createNewFile();
+				else
+					acf=true;
+				if(acf)
+				{
+					DataOutputStream os=new DataOutputStream(new FileOutputStream(ac));
+					os.writeBytes(ipa+"\n");
+					os.flush();
+					os.close();
 				}
 
 
@@ -172,9 +185,6 @@ public class Main
 					}
 				}catch(IOException e)
 				{
-//					System.err.println(e.toString());
-//					e.printStackTrace();
-
 					t.cancel();
 				}
 			}
