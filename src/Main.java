@@ -114,11 +114,13 @@ public class Main
 				if(acf)
 				{
 					//不重复写入
+					String[] ips=ipa.split("\\.");
+					String pref=ips[0]+"."+ips[1];
 					flag=1; //0:exist  1:not exist
 					br=new BufferedReader(new FileReader(ac));
 					while((line=br.readLine())!=null)
 					{
-						if(line.equals(ipa))
+						if(line.equals(pref))
 						{
 							flag=0;
 							break;
@@ -129,8 +131,6 @@ public class Main
 					{
 						//写入
 						DataOutputStream os=new DataOutputStream(new FileOutputStream(ac,true));
-						String[] ips=ipa.split("\\.");
-						String pref=ips[0]+"."+ips[1];
 						os.writeBytes(pref+"\n");
 						os.flush();
 						os.close();
