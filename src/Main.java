@@ -113,11 +113,26 @@ public class Main
 					acf=true; //存在则直接为true
 				if(acf)
 				{
-					//写入
-					DataOutputStream os=new DataOutputStream(new FileOutputStream(ac,true));
-					os.writeBytes(ipa+"\n");
-					os.flush();
-					os.close();
+					//不重复写入
+					flag=1; //0:exist  1:not exist
+					br=new BufferedReader(new FileReader(ac));
+					while((line=br.readLine())!=null)
+					{
+						if(line.equals(ipa))
+						{
+							flag=0;
+							break;
+						}
+					}
+					br.close();
+					if(flag!=0)
+					{
+						//写入
+						DataOutputStream os=new DataOutputStream(new FileOutputStream(ac,true));
+						os.writeBytes(ipa+"\n");
+						os.flush();
+						os.close();
+					}
 				}
 
 				//连接到本机指定的端口
