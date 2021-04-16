@@ -129,7 +129,9 @@ public class Main
 					{
 						//写入
 						DataOutputStream os=new DataOutputStream(new FileOutputStream(ac,true));
-						os.writeBytes(ipa+"\n");
+						String[] ips=ipa.split("\\.");
+						String pref=ips[0]+"."+ips[1];
+						os.writeBytes(pref+"\n");
 						os.flush();
 						os.close();
 					}
